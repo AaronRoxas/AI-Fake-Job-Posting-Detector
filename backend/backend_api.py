@@ -54,14 +54,27 @@ app.add_middleware(
 # ============================================================================
 print("Loading model and preprocessing components...")
 
+# Determine the correct path for model files (works in both dev and Vercel)
+import os
+from pathlib import Path
+
+# Get the directory where this file is located
+BACKEND_DIR = Path(__file__).parent.resolve()
+MODEL_DIR = BACKEND_DIR
+
 try:
-    model = joblib.load('best_model.pkl')
-    tfidf_vectorizer = joblib.load('tfidf_vectorizer.pkl')
-    onehot_encoder = joblib.load('onehot_encoder.pkl')
+    model_path = MODEL_DIR / 'best_model.pkl'
+    vectorizer_path = MODEL_DIR / 'tfidf_vectorizer.pkl'
+    encoder_path = MODEL_DIR / 'onehot_encoder.pkl'
+    
+    model = joblib.load(str(model_path))
+    tfidf_vectorizer = joblib.load(str(vectorizer_path))
+    onehot_encoder = joblib.load(str(encoder_path))
     print("✓ All components loaded successfully!")
 except FileNotFoundError as e:
     print(f"Error: {e}")
-    print("Make sure best_model.pkl, tfidf_vectorizer.pkl, and onehot_encoder.pkl are in the same directory.")
+    print(f"Looking in: {MODEL_DIR}")
+    print("Make sure best_model.pkl, tfidf_vectorizer.pkl, and onehot_encoder.pkl are in the backend directory.")
     raise
 
 # Initialize NLP tools
