@@ -11,11 +11,6 @@
       "src": "/api/(.*)",
       "dest": "backend/api/index.py"
     }
-  ],
-  "functions": {
-    "backend/api/index.py": {
-      "includeFiles": "backend/**"
-    }
-  }
+  ]
 }
 
